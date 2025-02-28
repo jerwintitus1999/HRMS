@@ -1,0 +1,58 @@
+{
+  "employeePayrolls": [
+    {
+      "employee_id": "EMP1001",
+      "employeeData": "uuid-employee-1",
+      "grossSalary": 50000,
+      "bankName": "State Bank of India",
+      "bankAccountNumber": "123456789012",
+      "ifscCode": "SBIN0001234",
+      "upiId": "ashwin@upi",
+      "casualLeave": 1,
+      "sickLeave": 1,
+      "permission": 2,
+      "late": 3,
+      "isPFIncluded": true,
+      "isESIIncluded": true,
+      "pfNumber": "PF123456",
+      "uanNumber": "UAN123456789",
+      "esiNumber": "ESI987654321"
+    },
+    {
+      "employee_id": "EMP1002",
+      "employeeData": "uuid-employee-2",
+      "grossSalary": 60000,
+      "bankName": "HDFC Bank",
+      "bankAccountNumber": "987654321098",
+      "ifscCode": "HDFC0004321",
+      "upiId": "faizal@upi",
+      "casualLeave": 2,
+      "sickLeave": 2,
+      "permission": 1,
+      "late": 1,
+      "isPFIncluded": true,
+      "isESIIncluded": false,
+      "pfNumber": "PF654321",
+      "uanNumber": "UAN987654321",
+      "esiNumber": null
+    },
+    {
+      "employee_id": "EMP1003",
+      "employeeData": "uuid-employee-3",
+      "grossSalary": 55000,
+      "bankName": "ICICI Bank",
+      "bankAccountNumber": "567890123456",
+      "ifscCode": "ICIC0005678",
+      "upiId": "priya@upi",
+      "casualLeave": 1,
+      "sickLeave": 3,
+      "permission": 2,
+      "late": 0,
+      "isPFIncluded": false,
+      "isESIIncluded": true,
+      "pfNumber": null,
+      "uanNumber": null,
+      "esiNumber": "ESI123456789"
+    }
+  ]
+}

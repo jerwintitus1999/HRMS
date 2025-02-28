@@ -1,0 +1,10 @@
+{"workingDay": {
+        "department_id": "DEPT567",
+        "departmentData": "uuid-department",
+        "workingDays": 22,
+        "leaveDays": 2,
+        "totalDays": 24,
+        "month": 2,
+        "year": 2024
+      }
+}

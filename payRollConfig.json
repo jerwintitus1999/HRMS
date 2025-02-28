@@ -1,0 +1,34 @@
+{
+  "employeePayrollConfigs": [
+    {
+      "employee_id": "EMP1001",
+      "payrollConfig": {
+        "basic": 20000,
+        "hra": 15000,
+        "conveyance": 5000,
+        "pf": 2400,
+        "esi": 375
+      }
+    },
+    {
+      "employee_id": "EMP1002",
+      "payrollConfig": {
+        "basic": 25000,
+        "hra": 18000,
+        "conveyance": 6000,
+        "pf": 3000,
+        "esi": 400
+      }
+    },
+    {
+      "employee_id": "EMP1003",
+      "payrollConfig": {
+        "basic": 22000,
+        "hra": 16000,
+        "conveyance": 5500,
+        "pf": 2600,
+        "esi": 390
+      }
+    }
+  ]
+}

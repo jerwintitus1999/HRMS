@@ -1,0 +1,46 @@
+{
+  "employees": [
+    {
+      "name": "Ashwin Kumar",
+      "mailId": "ashwin.kumar@example.com",
+      "mobileNumber": "9876543210",
+      "gender": "male",
+      "dob": 915148800000,
+      "empId": "EMP1001",
+      "doj": 1672531200000,
+      "dor": null,
+      "officialMailId": "ashwin.kumar@company.com",
+      "officialMobileNumber": "9876500012",
+      "organization_id": "ORG12345",
+      "organizationData": "uuid-organization",
+      "department_id": "DEPT567",
+      "departmentData": "uuid-department",
+      "designation_id": "DESG890",
+      "designationData": "uuid-designation",
+      "dobString": "01-Jan-1999",
+      "dojString": "01-Jan-2023",
+      "dorString": null
+    },
+    {
+      "name": "Mohammed Faizal",
+      "mailId": "mohammed.faizal@example.com",
+      "mobileNumber": "9876543213",
+      "gender": "male",
+      "dob": 915148800000,
+      "empId": "EMP1002",
+      "doj": 1675123200000,
+      "dor": null,
+      "officialMailId": "mohammed.faizal@company.com",
+      "officialMobileNumber": "9876500015",
+      "organization_id": "ORG67890",
+      "organizationData": "uuid-organization-2",
+      "department_id": "DEPT789",
+      "departmentData": "uuid-department-2",
+      "designation_id": "DESG456",
+      "designationData": "uuid-designation-2",
+      "dobString": "01-Jan-1999",
+      "dojString": "01-Feb-2023",
+      "dorString": null
+    }
+  ]
+}

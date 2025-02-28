@@ -1,0 +1,43 @@
+{
+  "leaves": [
+    {
+      "employee_id": "EMP1001",
+      "employeeData": "uuid-employee-1",
+      "casualLeaveTaken": 0,
+      "sickLeaveTaken": 0,
+      "compOffTaken": 0,
+      "unapprovedLeaveTaken": 0,
+      "permissionTaken": 0,
+      "availableCasualLeave": 1,
+      "availableSickLeave": 1,
+      "availableCompOff": 0,
+      "availablePermission": 2
+    },
+    {
+      "employee_id": "EMP1002",
+      "employeeData": "uuid-employee-2",
+      "casualLeaveTaken": 1,
+      "sickLeaveTaken": 0,
+      "compOffTaken": 1,
+      "unapprovedLeaveTaken": 0,
+      "permissionTaken": 1,
+      "availableCasualLeave": 2,
+      "availableSickLeave": 1,
+      "availableCompOff": 1,
+      "availablePermission": 1
+    },
+    {
+      "employee_id": "EMP1003",
+      "employeeData": "uuid-employee-3",
+      "casualLeaveTaken": 0,
+      "sickLeaveTaken": 1,
+      "compOffTaken": 0,
+      "unapprovedLeaveTaken": 1,
+      "permissionTaken": 2,
+      "availableCasualLeave": 3,
+      "availableSickLeave": 0,
+      "availableCompOff": 0,
+      "availablePermission": 1
+    }
+  ]
+}
