@@ -18,7 +18,7 @@ app.get("/", (req, res) => {
 app.get("/api/products", (req, res) => {
   res.json({ message: "Product list fetched successfully", products: [] });
 });
-app.get("/api/employeepayroll", employeePayroll)
+app.post("/api/employeepayroll", employeePayroll)
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
