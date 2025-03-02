@@ -1,5 +1,4 @@
-{
-  "employeePayrollConfigs": [
+ [
     {
       "employee_id": "EMP1001",
       "payrollConfig": {
@@ -31,4 +30,3 @@
       }
     }
   ]
-}

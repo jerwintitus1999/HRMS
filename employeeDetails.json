@@ -1,5 +1,4 @@
-{
-  "employees": [
+ [
     {
       "name": "Ashwin Kumar",
       "mailId": "ashwin.kumar@example.com",
@@ -21,7 +20,7 @@
       "dojString": "01-Jan-2023",
       "dorString": null
     },
-    {
+     {
       "name": "Mohammed Faizal",
       "mailId": "mohammed.faizal@example.com",
       "mobileNumber": "9876543213",
@@ -41,6 +40,26 @@
       "dobString": "01-Jan-1999",
       "dojString": "01-Feb-2023",
       "dorString": null
+    },
+  {
+      "name": "Rebecca D'Souza",
+      "mailId": "rebecca.dsouza@example.com",
+      "mobileNumber": "9876543214",
+      "gender": "female",
+      "dob": 946684800000,
+      "empId": "EMP1003",
+      "doj": 1677801600000,
+      "dor": null,
+      "officialMailId": "rebecca.dsouza@company.com",
+      "officialMobileNumber": "9876500016",
+      "organization_id": "ORG98765",
+      "organizationData": "uuid-organization-3",
+      "department_id": "DEPT890",
+      "departmentData": "uuid-department-3",
+      "designation_id": "DESG789",
+      "designationData": "uuid-designation-3",
+      "dobString": "01-Jan-2000",
+      "dojString": "01-Mar-2023",
+      "dorString": null
     }
-  ]
-}
+]

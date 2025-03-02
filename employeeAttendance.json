@@ -1,6 +1,4 @@
-{
-  "attendance": [
-    {
+    [{
       "employee_id": "EMP1001",
       "employeeData": "uuid-employee",
       "status": "present",
@@ -496,6 +494,4 @@
         "checkOutString": null,
         "dateString": "31-Mar-2024"
     }
-
   ]
-}

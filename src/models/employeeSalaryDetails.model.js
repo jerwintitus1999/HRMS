@@ -42,4 +42,4 @@ const payrollSchema = new mongoose.Schema(
 
 const Payroll = mongoose.model("employeeSalaryDetails", payrollSchema);
 
-module.exports = Payroll;
+module.exports = {Payroll};

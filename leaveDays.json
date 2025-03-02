@@ -1,5 +1,4 @@
-{
-  "leaves": [
+ [
     {
       "employee_id": "EMP1001",
       "employeeData": "uuid-employee-1",
@@ -40,4 +39,3 @@
       "availablePermission": 1
     }
   ]
-}
