@@ -105,7 +105,7 @@ const employeePayroll = async(req, res)=>{
       net_salary: netSalary,
       leave_utilization: {
         paid_days: totalSalaryDays,
-        // unpaid_days: EmployeeData.unapproved_leave,
+        // unpaid_days: progress,
         details: {
           present: EmployeeData.present,
           casual_leave: EmployeeData.casual_leave_taken,
@@ -115,8 +115,8 @@ const employeePayroll = async(req, res)=>{
           wfh: EmployeeData.wfh,
           od: EmployeeData.od,
           holiday:EmployeeData.holiday,
-          // extra_casual_leave: 1,
-          // extra_sick_leave: 1,
+          // extra_casual_leave: progress,
+          // extra_sick_leave: progress,
           unapproved_leave: EmployeeData.unapproved_leave,
         },
       },
