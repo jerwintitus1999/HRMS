@@ -192,10 +192,18 @@ const employeePayroll = async (req, res) => {
       totalWorkingCalculation.workingDay.totalDays;
 
 
-    const totalEmployeeWorkingDays = Math.floor(
+    let totalEmployeeWorkingDays = Math.floor(
       (totalSalaryDays / totalCompanyWorkingDays) * EmployeePayRoll.grossSalary
     );
+  let deduction = Math.round(
+    EmployeePayRoll.grossSalary / employeeAttendance.length
+  );
 
+   if (EmployeeData.halfDay > 0) {
+     totalEmployeeWorkingDays = Math.round(
+       totalEmployeeWorkingDays - (deduction/2)
+     );
+   }
 
     const pfDeduction = EmployeePayRoll.isPFIncluded
       ? SalaryDetails.payrollConfig.pf || 0
@@ -204,15 +212,8 @@ const employeePayroll = async (req, res) => {
       ? SalaryDetails.payrollConfig.esi || 0
       : 0;
 
-let netSalary = totalEmployeeWorkingDays - (pf + esi);
-
-    if (EmployeeData.halfDay > 0) {  
-      let deduction = Math.round(
-        EmployeePayRoll.grossSalary / employeeAttendance.length
-      );
-      
-  netSalary = Math.round(netSalary - deduction);
-}
+    let netSalary = totalEmployeeWorkingDays - (pf + esi);
+ 
 
         let overTime = totalOverTime > 0 ? totalOverTime / 3600000 : 0;
         let roundedOverTime = Math.round(overTime);
@@ -239,7 +240,7 @@ let netSalary = totalEmployeeWorkingDays - (pf + esi);
       overTimeSalary: overTimeSalary,
       leave_utilization: {
         paid_days: totalSalaryDays,
-        details: { ...EmployeeData, overTime: roundedOverTime },
+        details: { ...EmployeeData, overTime: roundedOverTime, unPaidSalaryDeduction: deduction*EmployeeData.unPaid, unApprovedSalaryDeduction : deduction * EmployeeData.unapproved_leave, halfDaySalaryDeduction : (deduction)*EmployeeData.halfDay},
       },
     };
 
