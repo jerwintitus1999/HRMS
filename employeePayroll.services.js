@@ -1,5 +1,5 @@
-const {Attendance} = require("./src/models/attendance.model")
-const{ Employee} = require("./src/models/employee.model")
+const { Attendance } = require("./src/models/attendance.model");
+const { Employee } = require("./src/models/employee.model");
 const { EmployeePayroll } = require("./src/models/employeePayroll.model");
 const { Payroll } = require("./src/models/employeeSalaryDetails.model");
 const { CompanyWorkingDays } = require("./src/models/workingDay.model");
@@ -15,19 +15,33 @@ const employeePayroll = async (req, res) => {
       wfh: 0,
       od: 0,
       holiday: 0,
+      late: 0,
       unPaid: 0,
       unapproved_leave: 0,
+      halfDay: 0,
     };
 
     const employee_id = "EMP1001";
 
+    let totalOverTime = 0;
+
+
     const employeeAttendance = await Attendance.find({ employee_id });
+    const EmployeePayRoll = await EmployeePayroll.findOne({ employee_id });
+
+    console.log("Before", EmployeePayRoll);
+    console.log("Before", EmployeeData);
 
     for (let data of employeeAttendance) {
       if (data.isApproved) {
+          let overTime = 0;
         switch (data.status) {
           case "present":
             EmployeeData.present++;
+             if (data.isOtApproved) {
+               overTime = data.checkOut - data.checkIn;
+               if (overTime > 28800000) totalOverTime += overTime;
+             }
             break;
           case "casual-leave":
             EmployeeData.casual_leave_taken++;
@@ -43,10 +57,51 @@ const employeePayroll = async (req, res) => {
             break;
           case "wfh":
             EmployeeData.wfh++;
+             if (data.isOtApproved) {
+               overTime = data.checkOut - data.checkIn;
+               if (overTime > 28800000) totalOverTime += overTime;
+             }
             break;
           case "od":
             EmployeeData.od++;
+             if (data.isOtApproved) {
+               overTime = data.checkOut - data.checkIn;
+               if (overTime > 28800000) totalOverTime += overTime;
+             }
             break;
+        }
+
+        if (data.isLateApproved === false) {
+          EmployeeData.late++;
+
+          if (EmployeePayRoll.late > 0) {
+            EmployeePayRoll.late--;
+          } else if (EmployeePayRoll.permission > 0) {
+            EmployeePayRoll.permission--;
+          }
+          else if (EmployeePayRoll.permission === 0 && EmployeePayRoll.late === 0 && EmployeeData.halfDay < 1) {
+            EmployeeData.halfDay++
+             if (EmployeeData.present > 0) {
+               EmployeeData.present--;
+             }
+            }
+          else {
+            EmployeeData.unPaid++;
+            if (EmployeeData.present > 0) {
+              EmployeeData.present--;
+            }
+          }
+        }
+
+        if (data.isPermissionApproved === true) {
+          if (EmployeePayRoll.permission > 0) {
+            EmployeePayRoll.permission--;
+          } else {
+            EmployeeData.unPaid++;
+            if (EmployeeData.present > 0) {
+              EmployeeData.present--;
+            }
+          }
         }
       } else {
         EmployeeData.unapproved_leave++;
@@ -55,40 +110,60 @@ const employeePayroll = async (req, res) => {
       if (data.status === "holiday") EmployeeData.holiday++;
     }
 
-    console.log("Before", EmployeeData);
+    console.log("Middle", EmployeeData);
 
     const SalaryDetails = await Payroll.findOne({ employee_id });
     const EmployeeDetails = await Employee.findOne({ empId: employee_id });
-    const EmployeePayRoll = await EmployeePayroll.findOne({ employee_id });
 
     if (!EmployeePayRoll) {
       return res.status(404).json({ message: "Employee Payroll not found" });
     }
 
-    console.log("Before", EmployeePayRoll);
-
     if (EmployeeData.sick_leave_taken >= EmployeePayRoll.sickLeave) {
-      const leaveCount =
-        EmployeeData.sick_leave_taken - EmployeePayRoll.sickLeave;
-      EmployeeData.sick_leave_taken = leaveCount;
+      const count = EmployeeData.sick_leave_taken - EmployeePayRoll.sickLeave;
       EmployeePayRoll.sickLeave = 0;
-      EmployeeData.unPaid += leaveCount;
+
+      if (count > 0 && count <= EmployeePayRoll.casualLeave) {
+        EmployeePayRoll.casualLeave -= count;
+      } else if (count > EmployeePayRoll.casualLeave) {
+        EmployeePayRoll.casualLeave = 0;
+      }
     } else {
       EmployeePayRoll.sickLeave -= EmployeeData.sick_leave_taken;
     }
 
-    console.log("After", EmployeePayRoll);
-    console.log("After", EmployeeData);
+    if (EmployeeData.casual_leave_taken >= EmployeePayRoll.casualLeave) {
+      const count =
+        EmployeeData.casual_leave_taken - EmployeePayRoll.casualLeave;
+      EmployeePayRoll.casualLeave = 0;
+
+      if (count > 0 && count <= EmployeePayRoll.sickLeave) {
+        EmployeePayRoll.sickLeave -= count;
+
+      } else if (count > EmployeePayRoll.sickLeave) {
+        EmployeePayRoll.sickLeave = 0;
+      }
+    } else {
+      EmployeePayRoll.casualLeave -= EmployeeData.casual_leave_taken;
+    }
+
+
+
 
     if (!SalaryDetails || !SalaryDetails.payrollConfig) {
       return res.status(400).json({ message: "Salary details missing" });
     }
-console.log("sickLeave", EmployeeData.sick_leave_taken);
+    console.log("sickLeave", EmployeeData.sick_leave_taken);
 
-    const Grosssalary =
-      SalaryDetails.payrollConfig.basic +
-      SalaryDetails.payrollConfig.hra +
-      SalaryDetails.payrollConfig.conveyance;
+        const basic =
+          (EmployeePayRoll.grossSalary * SalaryDetails.payrollConfig.basic) /
+          100;
+        const hra = (basic * 75) / 100;
+        const conveyance = (EmployeePayRoll.grossSalary * 10) / 100;
+        const pf = (basic * SalaryDetails.payrollConfig.pf) / 100;
+        const esi =
+          (EmployeePayRoll.grossSalary * SalaryDetails.payrollConfig.esi) / 100;
+
 
     const totalSalaryDays =
       EmployeeData.casual_leave_taken +
@@ -116,9 +191,11 @@ console.log("sickLeave", EmployeeData.sick_leave_taken);
     const totalCompanyWorkingDays =
       totalWorkingCalculation.workingDay.totalDays;
 
+
     const totalEmployeeWorkingDays = Math.floor(
-      (totalSalaryDays / totalCompanyWorkingDays) * Grosssalary
+      (totalSalaryDays / totalCompanyWorkingDays) * EmployeePayRoll.grossSalary
     );
+
 
     const pfDeduction = EmployeePayRoll.isPFIncluded
       ? SalaryDetails.payrollConfig.pf || 0
@@ -127,25 +204,47 @@ console.log("sickLeave", EmployeeData.sick_leave_taken);
       ? SalaryDetails.payrollConfig.esi || 0
       : 0;
 
-    const netSalary = totalEmployeeWorkingDays - (pfDeduction + esiDeduction);
+let netSalary = totalEmployeeWorkingDays - (pf + esi);
+
+    if (EmployeeData.halfDay > 0) {  
+      let deduction = Math.round(
+        EmployeePayRoll.grossSalary / employeeAttendance.length
+      );
+      
+  netSalary = Math.round(netSalary - deduction);
+}
+
+        let overTime = totalOverTime > 0 ? totalOverTime / 3600000 : 0;
+        let roundedOverTime = Math.round(overTime);
+
+      const overTimeSalary =
+        EmployeePayRoll.overTimePayPerHour * roundedOverTime;
+
 
     console.log(netSalary);
 
     const employeePayBill = {
       employee_id,
-      gross_salary: Grosssalary,
-      beforeDeduction: totalEmployeeWorkingDays,
+      gross_salary: EmployeePayRoll.grossSalary,
+      basic_salary: basic,
+      hra: hra,
+      conveyance: conveyance,
+      beforeDeductionSalary: totalEmployeeWorkingDays,
       deductions: {
-        pf: pfDeduction,
-        esi: esiDeduction,
-        total_deductions: pfDeduction + esiDeduction,
+        pf: pf,
+        esi: esi,
+        total_deductions: pf + esi,
       },
       net_salary: netSalary,
+      overTimeSalary: overTimeSalary,
       leave_utilization: {
         paid_days: totalSalaryDays,
-        details: { ...EmployeeData },
+        details: { ...EmployeeData, overTime: roundedOverTime },
       },
     };
+
+    console.log("After", EmployeePayRoll);
+    console.log("After", EmployeeData);
 
     return res.json({ message: "Message sent successfully", employeePayBill });
   } catch (error) {
@@ -156,5 +255,5 @@ console.log("sickLeave", EmployeeData.sick_leave_taken);
 };
 
 module.exports = {
-    employeePayroll
-}
+  employeePayroll,
+};

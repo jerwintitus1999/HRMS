@@ -30,6 +30,9 @@ const employeePayrollSchema = new mongoose.Schema(
     upiId: {
       type: String,
     },
+    overTimePayPerHour: {
+      type:Number
+    },
 
     // Leave and Permission Allowed
     casualLeave: {
