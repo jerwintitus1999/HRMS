@@ -199,11 +199,13 @@ const employeePayroll = async (req, res) => {
     EmployeePayRoll.grossSalary / employeeAttendance.length
   );
 
-   if (EmployeeData.halfDay > 0) {
-     totalEmployeeWorkingDays = Math.round(
-       totalEmployeeWorkingDays - (deduction/2)
-     );
-   }
+if (EmployeeData.halfDay > 0) {
+  totalEmployeeWorkingDays = Math.round(
+    totalEmployeeWorkingDays + deduction / 2
+  );
+  EmployeeData.halfDay--;
+}
+
 
     const pfDeduction = EmployeePayRoll.isPFIncluded
       ? SalaryDetails.payrollConfig.pf || 0
@@ -240,7 +242,7 @@ const employeePayroll = async (req, res) => {
       overTimeSalary: overTimeSalary,
       leave_utilization: {
         paid_days: totalSalaryDays,
-        details: { ...EmployeeData, overTime: roundedOverTime, unPaidSalaryDeduction: deduction*EmployeeData.unPaid, unApprovedSalaryDeduction : deduction * EmployeeData.unapproved_leave, halfDaySalaryDeduction : (deduction)*EmployeeData.halfDay},
+        details: { ...EmployeeData, overTime: roundedOverTime, unPaidSalaryDeduction: deduction*EmployeeData.unPaid, unApprovedSalaryDeduction : deduction * EmployeeData.unapproved_leave, halfDaySalaryDeduction : Math.round(((deduction)*EmployeeData.halfDay)/2)},
       },
     };
 
