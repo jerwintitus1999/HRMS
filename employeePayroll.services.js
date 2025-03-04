@@ -242,7 +242,7 @@ if (EmployeeData.halfDay > 0) {
       overTimeSalary: overTimeSalary,
       leave_utilization: {
         paid_days: totalSalaryDays,
-        details: { ...EmployeeData, overTime: roundedOverTime, unPaidSalaryDeduction: deduction*EmployeeData.unPaid, unApprovedSalaryDeduction : deduction * EmployeeData.unapproved_leave, halfDaySalaryDeduction : Math.round(((deduction)*EmployeeData.halfDay)/2)},
+        details: { ...EmployeeData, overTime: roundedOverTime, unPaidSalaryDeduction: deduction*EmployeeData.unPaid, unApprovedSalaryDeduction : deduction * EmployeeData.unapproved_leave, halfDaySalaryDeduction : Math.round(((deduction)*1)/2)},
       },
     };
 
